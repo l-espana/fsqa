@@ -22,6 +22,8 @@ https://github.com/oesteban/endofday/blob/f2e79c625d648ef45b08cc1f11fd0bd84342d6
 
 Along with other report-related functions.
 """
+import os
+import datetime
 import jinja2
 import base64
 import re
@@ -74,3 +76,52 @@ def read_report_snippet(in_file):
             png_uri = base64.b64encode(open(img_file, "rb").read()).decode("utf-8")
             png_tag = "<img src='data:image/png;base64,{0}'>".format(png_uri)
             return "\n".join(png_tag)
+
+
+def gen_html(output_dir, imgs, out_file, template):
+    tlrc = []
+    aseg = []
+    surf = []
+
+    for img in imgs:
+        if "svg" in img:
+            tag = read_report_snippet(img)
+            tlrc.append(tag)
+        elif "aseg" in img or "aparc" in img:
+            tag = read_report_snippet(img)
+            aseg.append(tag)
+        else:
+            labels = {
+                "lh_pial": "LH Pial",
+                "rh_pial": "RH Pial",
+                "lh_infl": "LH Inflated",
+                "rh_infl": "RH Inflated",
+                "lh_white": "LH White Matter",
+                "rh_white": "RH White Matter",
+            }
+            tag = read_report_snippet(img)
+            surf_tuple = (labels[os.path.basename(img).split(".")[0]], tag, img)
+            surf.append(surf_tuple)
+
+    _config = {
+        "timestamp": datetime.datetime.now().strftime("%Y-%m-%d, %H:%M"),
+        "subject": os.path.basename(output_dir),
+        "tlrc": tlrc,
+        "aseg": aseg,
+        "surf": surf,
+    }
+
+    tpl = Template(template)
+    tpl.generate_conf(_config, out_file)
+
+    return out_file
+
+
+def cleanup(subject_dir):
+    file_exts = [".svg", ".png", ".xfm", ".nii.gz"]
+    for root, _, files in os.walk(subject_dir):
+        for ff in files:
+            if ff.endswith([ext for ext in file_exts]):
+                os.remove(os.path.join(root, ff))
+
+    return

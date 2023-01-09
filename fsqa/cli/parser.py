@@ -37,6 +37,15 @@ def _build_parser():
             raise parser.error(f"Path does not exist: <{path}>")
         return Path(path).expanduser().absolute()
 
+    def _is_file(path, parser):
+        """Ensure a given path exists and it is a file."""
+        path = _path_exists(path, parser)
+        if not path.is_file():
+            raise parser.error(
+                f"Path should point to a file (or symlink of file): <{path}>."
+            )
+        return path
+
     def _drop_sub(participant_label):
         return (
             participant_label[4:]
@@ -50,12 +59,13 @@ def _build_parser():
         formatter_class=ArgumentDefaultsHelpFormatter,
     )
     PathExists = partial(_path_exists, parser=parser)
+    FileExists = partial(_is_file, parser=parser)
 
     parser.add_argument(
         "--output_dir",
         action="store",
         type=PathExists,
-        help="the output path for reports",
+        help="Output path for reports",
     )
     parser.add_argument(
         "--subjects_dir",
@@ -67,14 +77,45 @@ def _build_parser():
         "--participant_label",
         action="store",
         type=_drop_sub,
-        help="Participant label identifier. Use 'all' to generate "
+        help="Participant label identifier. Exclude or use 'all' to generate "
         "reports for all subjects in the subjects directory",
     )
     parser.add_argument(
-        "--bids",
+        "--bids_dir",
+        action="store",
+        type=PathExists,
+        help="Use if data is in BIDS format",
+    )
+    parser.add_argument(
+        "--work_dir",
+        "--w",
+        action="store",
+        type=Path,
+        help="Directory for intermediate files.",
+    )
+    parser.add_argument(
+        "--freesurfer_home",
+        action="store",
+        type=PathExists,
+        help="Option to update the FREESURFER_HOME directory.",
+    )
+    parser.add_argument(
+        "--fs_license",
+        action="store",
+        type=FileExists,
+        help="Path to FreeSurfer license.",
+    )
+    parser.add_argument(
+        "--num_imgs",
+        action="store",
+        type=int,
+        help="Number of mosaic images to plot. Default 10.",
+    )
+    parser.add_argument(
+        "--keep",
         action="store_true",
         default=False,
-        help="assume data and outputs are not BIDS formatted",
+        help="Keep intermediate files used to generate reports. Default False.",
     )
 
     return parser
@@ -86,13 +127,47 @@ def parse_args(args=None, namespace=None):
     opts = parser.parse_args(args, namespace)
 
     config.from_dict(vars(opts))
-    # build_log = config.logger.cli
+    build_log = config.logger.cli
 
     # Set up directories
+    bids_dir = config.execution.bids_dir
     output_dir = config.execution.output_dir
-    # work_dir = config.execution.work_dir
+    work_dir = config.execution.work_dir
     output_layout = config.execution.output_layout
 
     if config.execution.fs_subjects_dir is None:
         if output_layout == "bids":
             config.execution.fs_subjects_dir = output_dir / "freesurfer"
+
+    if output_dir == bids_dir:
+        parser.error(
+            "The selected output folder is the same as the input BIDS folder. "
+            "Please modify the output path (suggestion: %s)." % bids_dir / "derivatives"
+        )
+
+    if bids_dir in work_dir.parents:
+        parser.error(
+            "The selected working directory is a subdirectory of the input BIDS folder."
+            "Please modify the output path."
+        )
+
+    config.execution.log_dir = work_dir / config.execution.run_uuid / "logs"
+    config.execution.log_dir.mkdir(exist_ok=True, parents=True)
+
+    config.execution.init()
+    all_subjects = config.execution.layout.get_subjects()
+    if config.execution.participant_label is None or "all":
+        config.execution.participant_label = all_subjects
+        build_log.info("Running reports for all subjects")
+
+    participant_label = set(config.execution.participant_label)
+    missing_subjects = participant_label - set(all_subjects)
+    if missing_subjects:
+        parser.error(
+            "One or more participant labels were not found in the BIDS directory: "
+            "%s." % ", ".join(missing_subjects)
+        )
+    config.execution.participant_label = sorted(participant_label)
+    build_log.info(f"FreeSurfer home: {config.execution.freesurfer_home}")
+
+    return opts

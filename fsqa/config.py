@@ -83,16 +83,20 @@ class environment(_Config):
 class execution(_Config):
     """FreeSurfer related settings"""
 
-    fs_freesurfer_home = None
+    bids_dir = None
+    """Existing path to BIDS-formatted data"""
+    freesurfer_home = os.getenv("FREESURFER_HOME")
     """FreeSurfer Home directory"""
-    fs_subjects_dir = None
-    """FreeSurfer's subjects directory"""
     fs_license = None
-    """FreeSurfer licence file"""
+    """FreeSurfer license file"""
     keep = False
     """Keep intermediate files or not"""
     layout = None
     """A :py:class:`~bids.layout.BIDSLayout` object, see :py:func:`init`."""
+    log_dir = None
+    """Log directory"""
+    num_imgs = 10
+    """Number of mosaic images to generate. Default 10."""
     output_dir = None
     """Folder where reports will be stored"""
     output_layout = "bids"
@@ -101,12 +105,15 @@ class execution(_Config):
     """List of participant ids to be processed"""
     run_uuid = f"{uuid4()}"
     """Run identifier"""
+    subjects_dir = None
+    """FreeSurfer's subjects directory"""
     work_dir = Path("work").absolute()
     """Path to working directory for intermediate files"""
 
     _layout = None
 
     _paths = (
+        "bids_dir",
         "fs_subjects_dir",
         "layout",
         "output_dir",
@@ -172,6 +179,8 @@ class loggers:
     """root logger"""
     cli = logging.getLogger("cli")
     """Command-line interface logger"""
+    workflow = logging.getLogger("fsqa")
+    """FSQA logger."""
 
     @classmethod
     def init(cls):
@@ -179,6 +188,7 @@ class loggers:
         _handler = logging.StreamHandler(stream=sys.stdout)
         _handler.setFormatter(logging.Formatter(fmt=cls._fmt, datefmt=cls._datefmt))
         cls.cli.addHandler(_handler)
+        cls.workflow.addHandler(_handler)
 
 
 def from_dict(settings):

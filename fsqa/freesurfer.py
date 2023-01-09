@@ -92,7 +92,7 @@ def get_tlrc_report(subject_fsdir, output_dir):
         encoding="utf-8",
     )
 
-    # convert subject original T1 to nifit (for FSL)
+    # convert subject original T1 to nifti (for FSL)
     convert = MRIConvert(
         in_file=os.path.join(subject_fsdir, "mri", "orig.mgz"),
         out_file=os.path.join(output_dir, "orig.nii.gz"),
