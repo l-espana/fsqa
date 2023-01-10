@@ -1,0 +1,46 @@
+:py:mod:`fsqa.freesurfer`
+=========================
+
+.. py:module:: fsqa.freesurfer
+
+.. autoapi-nested-parse::
+
+   FreeSurfer-related operations and utilities.
+
+
+
+Module Contents
+---------------
+
+
+Functions
+~~~~~~~~~
+
+.. autoapisummary::
+
+   fsqa.freesurfer.check_reconall
+   fsqa.freesurfer.get_colormap
+   fsqa.freesurfer.get_tlrc_report
+   fsqa.freesurfer.get_aseg_plots
+
+
+
+.. py:function:: check_reconall(subject_fsdir)
+
+   Verifies that the subject's FreeSurfer recon completed successfully.
+
+
+.. py:function:: get_colormap(freesurfer_home)
+
+   Generates matplotlib colormap from FreeSurfer LUT.
+   Code from:
+   https://github.com/Deep-MI/qatools-python/blob/freesurfer-module-releases/qatoolspython/createScreenshots.py
+
+
+.. py:function:: get_tlrc_report(subject_fsdir, output_dir)
+
+   Computes inverse talairach transform from FreeSurfer output and
+   replicates the tkregister2 registration images for QA.
+
+
+.. py:function:: get_aseg_plots(subject_fsdir, output_dir, num_imgs)

@@ -1,0 +1,33 @@
+:py:mod:`fsqa.cli.parser`
+=========================
+
+.. py:module:: fsqa.cli.parser
+
+.. autoapi-nested-parse::
+
+   FSQA Parser
+
+
+
+Module Contents
+---------------
+
+
+Functions
+~~~~~~~~~
+
+.. autoapisummary::
+
+   fsqa.cli.parser._build_parser
+   fsqa.cli.parser.parse_args
+
+
+
+.. py:function:: _build_parser()
+
+   Build parser object.
+
+
+.. py:function:: parse_args(args=None, namespace=None)
+
+   Parse args and run checks on the command line.

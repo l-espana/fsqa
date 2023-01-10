@@ -1,0 +1,339 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>fsqa.config &mdash; fsqa 0.1.0 documentation</title>
+      <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="../../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" type="text/css" />
+      <link rel="stylesheet" href="../../_static/graphviz.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+
+        <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
+        <script src="../../_static/jquery.js"></script>
+        <script src="../../_static/underscore.js"></script>
+        <script src="../../_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script src="../../_static/doctools.js"></script>
+        <script src="../../_static/sphinx_highlight.js"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+</head>
+
+<body class="wy-body-for-nav">
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="../../index.html" class="icon icon-home"> fsqa
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../autoapi/index.html">API Reference</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">fsqa</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home"></a></li>
+          <li class="breadcrumb-item"><a href="../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">fsqa.config</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+
+  <h1>Source code for fsqa.config</h1><div class="highlight"><pre>
+<span></span><span class="c1"># emacs: -*- mode: python; py-indent-offset: 4; indent-tabs-mode: nil -*-</span>
+<span class="c1"># vi: set ft=python sts=4 ts=4 sw=4 et:</span>
+<span class="c1">#</span>
+<span class="c1"># Copyright 2022 Lezlie España &lt;www.github.com/l-espana&gt;</span>
+<span class="c1">#</span>
+<span class="c1"># Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);</span>
+<span class="c1"># you may not use this file except in compliance with the License.</span>
+<span class="c1"># You may obtain a copy of the License at</span>
+<span class="c1">#</span>
+<span class="c1">#     http://www.apache.org/licenses/LICENSE-2.0</span>
+<span class="c1">#</span>
+<span class="c1"># Unless required by applicable law or agreed to in writing, software</span>
+<span class="c1"># distributed under the License is distributed on an &quot;AS IS&quot; BASIS,</span>
+<span class="c1"># WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.</span>
+<span class="c1"># See the License for the specific language governing permissions and</span>
+<span class="c1"># limitations under the License.</span>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">Config file for FSQA basic settings.</span>
+<span class="sd">Handles BIDS data, FreeSurfer environment, etc.</span>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">import</span> <span class="nn">sys</span>
+<span class="kn">import</span> <span class="nn">logging</span>
+<span class="kn">from</span> <span class="nn">pathlib</span> <span class="kn">import</span> <span class="n">Path</span>
+<span class="kn">from</span> <span class="nn">uuid</span> <span class="kn">import</span> <span class="n">uuid4</span>
+<span class="kn">from</span> <span class="nn">.</span> <span class="kn">import</span> <span class="n">__version__</span>
+
+<span class="n">CONFIG_FILENAME</span> <span class="o">=</span> <span class="s2">&quot;fsqa.toml&quot;</span>
+
+
+<div class="viewcode-block" id="_Config"><a class="viewcode-back" href="../../autoapi/fsqa/config/index.html#fsqa.config._Config">[docs]</a><span class="k">class</span> <span class="nc">_Config</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;Abstract config class&quot;&quot;&quot;</span>
+
+    <span class="n">_paths</span> <span class="o">=</span> <span class="nb">tuple</span><span class="p">()</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Avert instantiations&quot;&quot;&quot;</span>
+        <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span><span class="s2">&quot;Configuration type is not instantiable.&quot;</span><span class="p">)</span>
+
+<div class="viewcode-block" id="_Config.load"><a class="viewcode-back" href="../../autoapi/fsqa/config/index.html#fsqa.config._Config.load">[docs]</a>    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">load</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">settings</span><span class="p">,</span> <span class="n">init</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">ignore</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Load settings from dictionary&quot;&quot;&quot;</span>
+        <span class="n">ignore</span> <span class="o">=</span> <span class="n">ignore</span> <span class="ow">or</span> <span class="p">{}</span>
+        <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">settings</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+            <span class="k">if</span> <span class="n">k</span> <span class="ow">in</span> <span class="n">ignore</span> <span class="ow">or</span> <span class="n">v</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="k">continue</span>
+            <span class="k">if</span> <span class="n">k</span> <span class="ow">in</span> <span class="bp">cls</span><span class="o">.</span><span class="n">_paths</span><span class="p">:</span>
+                <span class="nb">setattr</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">k</span><span class="p">,</span> <span class="n">Path</span><span class="p">(</span><span class="n">v</span><span class="p">)</span><span class="o">.</span><span class="n">absolute</span><span class="p">())</span>
+            <span class="k">elif</span> <span class="nb">hasattr</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">k</span><span class="p">):</span>
+                <span class="nb">setattr</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">init</span><span class="p">:</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="bp">cls</span><span class="o">.</span><span class="n">init</span><span class="p">()</span>
+            <span class="k">except</span> <span class="ne">AttributeError</span><span class="p">:</span>
+                <span class="k">pass</span></div>
+
+<div class="viewcode-block" id="_Config.get"><a class="viewcode-back" href="../../autoapi/fsqa/config/index.html#fsqa.config._Config.get">[docs]</a>    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">get</span><span class="p">(</span><span class="bp">cls</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Return defined settings&quot;&quot;&quot;</span>
+        <span class="n">out</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="bp">cls</span><span class="o">.</span><span class="vm">__dict__</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+            <span class="k">if</span> <span class="n">k</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">&quot;_&quot;</span><span class="p">)</span> <span class="ow">or</span> <span class="n">v</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="k">continue</span>
+            <span class="k">if</span> <span class="n">callable</span><span class="p">(</span><span class="nb">getattr</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">k</span><span class="p">)):</span>
+                <span class="k">continue</span>
+            <span class="k">if</span> <span class="n">k</span> <span class="ow">in</span> <span class="bp">cls</span><span class="o">.</span><span class="n">_paths</span><span class="p">:</span>
+                <span class="n">v</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">v</span><span class="p">)</span>
+            <span class="n">out</span><span class="p">[</span><span class="n">k</span><span class="p">]</span> <span class="o">=</span> <span class="n">v</span>
+
+        <span class="k">return</span> <span class="n">out</span></div></div>
+
+
+<div class="viewcode-block" id="environment"><a class="viewcode-back" href="../../autoapi/fsqa/config/index.html#fsqa.config.environment">[docs]</a><span class="k">class</span> <span class="nc">environment</span><span class="p">(</span><span class="n">_Config</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Platform and environment info&quot;&quot;&quot;</span>
+
+    <span class="n">exec_env</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">name</span>
+    <span class="sd">&quot;&quot;&quot;Execution platform string&quot;&quot;&quot;</span>
+    <span class="n">version</span> <span class="o">=</span> <span class="n">__version__</span>
+    <span class="sd">&quot;&quot;&quot;FSQA version&quot;&quot;&quot;</span></div>
+
+
+<div class="viewcode-block" id="execution"><a class="viewcode-back" href="../../autoapi/fsqa/config/index.html#fsqa.config.execution">[docs]</a><span class="k">class</span> <span class="nc">execution</span><span class="p">(</span><span class="n">_Config</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;FreeSurfer related settings&quot;&quot;&quot;</span>
+
+    <span class="n">bids_dir</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="sd">&quot;&quot;&quot;Existing path to BIDS-formatted data&quot;&quot;&quot;</span>
+    <span class="n">freesurfer_home</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">getenv</span><span class="p">(</span><span class="s2">&quot;FREESURFER_HOME&quot;</span><span class="p">)</span>
+    <span class="sd">&quot;&quot;&quot;FreeSurfer Home directory&quot;&quot;&quot;</span>
+    <span class="n">fs_license</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="sd">&quot;&quot;&quot;FreeSurfer license file&quot;&quot;&quot;</span>
+    <span class="n">keep</span> <span class="o">=</span> <span class="kc">False</span>
+    <span class="sd">&quot;&quot;&quot;Keep intermediate files or not&quot;&quot;&quot;</span>
+    <span class="n">layout</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="sd">&quot;&quot;&quot;A :py:class:`~bids.layout.BIDSLayout` object, see :py:func:`init`.&quot;&quot;&quot;</span>
+    <span class="n">log_dir</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="sd">&quot;&quot;&quot;Log directory&quot;&quot;&quot;</span>
+    <span class="n">num_imgs</span> <span class="o">=</span> <span class="mi">10</span>
+    <span class="sd">&quot;&quot;&quot;Number of mosaic images to generate. Default 10.&quot;&quot;&quot;</span>
+    <span class="n">output_dir</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="sd">&quot;&quot;&quot;Folder where reports will be stored&quot;&quot;&quot;</span>
+    <span class="n">output_layout</span> <span class="o">=</span> <span class="s2">&quot;bids&quot;</span>
+    <span class="sd">&quot;&quot;&quot;Layout of derivatives within output_dir&quot;&quot;&quot;</span>
+    <span class="n">participant_label</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="sd">&quot;&quot;&quot;List of participant ids to be processed&quot;&quot;&quot;</span>
+    <span class="n">run_uuid</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">uuid4</span><span class="p">()</span><span class="si">}</span><span class="s2">&quot;</span>
+    <span class="sd">&quot;&quot;&quot;Run identifier&quot;&quot;&quot;</span>
+    <span class="n">subjects_dir</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="sd">&quot;&quot;&quot;FreeSurfer&#39;s subjects directory&quot;&quot;&quot;</span>
+    <span class="n">work_dir</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="s2">&quot;work&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">absolute</span><span class="p">()</span>
+    <span class="sd">&quot;&quot;&quot;Path to working directory for intermediate files&quot;&quot;&quot;</span>
+
+    <span class="n">_layout</span> <span class="o">=</span> <span class="kc">None</span>
+
+    <span class="n">_paths</span> <span class="o">=</span> <span class="p">(</span>
+        <span class="s2">&quot;bids_dir&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;fs_subjects_dir&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;layout&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;output_dir&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;work_dir&quot;</span><span class="p">,</span>
+    <span class="p">)</span>
+
+<div class="viewcode-block" id="execution.init"><a class="viewcode-back" href="../../autoapi/fsqa/config/index.html#fsqa.config.execution.init">[docs]</a>    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">init</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">update</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Create a new BIDS Layout accessible with :attr:`~execution.layout`.&quot;&quot;&quot;</span>
+
+        <span class="k">if</span> <span class="bp">cls</span><span class="o">.</span><span class="n">_layout</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">or</span> <span class="n">update</span><span class="p">:</span>
+            <span class="kn">import</span> <span class="nn">re</span>
+            <span class="kn">from</span> <span class="nn">bids.layout.index</span> <span class="kn">import</span> <span class="n">BIDSLayoutIndexer</span>
+            <span class="kn">from</span> <span class="nn">bids.layout</span> <span class="kn">import</span> <span class="n">BIDSLayout</span>
+
+            <span class="n">_db_path</span> <span class="o">=</span> <span class="bp">cls</span><span class="o">.</span><span class="n">bids_database_dir</span> <span class="ow">or</span> <span class="p">(</span>
+                <span class="bp">cls</span><span class="o">.</span><span class="n">work_dir</span> <span class="o">/</span> <span class="bp">cls</span><span class="o">.</span><span class="n">run_uuid</span> <span class="o">/</span> <span class="s2">&quot;bids_db&quot;</span>
+            <span class="p">)</span>
+            <span class="n">_db_path</span><span class="o">.</span><span class="n">mkdir</span><span class="p">(</span><span class="n">exist_ok</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">parents</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+            <span class="c1"># Recommended after PyBIDS 12.1</span>
+            <span class="n">_indexer</span> <span class="o">=</span> <span class="n">BIDSLayoutIndexer</span><span class="p">(</span>
+                <span class="n">validate</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+                <span class="n">ignore</span><span class="o">=</span><span class="p">(</span>
+                    <span class="s2">&quot;code&quot;</span><span class="p">,</span>
+                    <span class="s2">&quot;stimuli&quot;</span><span class="p">,</span>
+                    <span class="s2">&quot;sourcedata&quot;</span><span class="p">,</span>
+                    <span class="s2">&quot;models&quot;</span><span class="p">,</span>
+                    <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;^\.&quot;</span><span class="p">),</span>
+                    <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span>
+                        <span class="sa">r</span><span class="s2">&quot;sub-[a-zA-Z0-9]+(/ses-[a-zA-Z0-9]+)?/(dwi|eeg|ieeg|meg|perf)&quot;</span>
+                    <span class="p">),</span>
+                <span class="p">),</span>
+            <span class="p">)</span>
+            <span class="bp">cls</span><span class="o">.</span><span class="n">_layout</span> <span class="o">=</span> <span class="n">BIDSLayout</span><span class="p">(</span>
+                <span class="nb">str</span><span class="p">(</span><span class="bp">cls</span><span class="o">.</span><span class="n">bids_dir</span><span class="p">),</span>
+                <span class="n">database_path</span><span class="o">=</span><span class="n">_db_path</span><span class="p">,</span>
+                <span class="n">reset_database</span><span class="o">=</span><span class="n">update</span><span class="p">,</span>
+                <span class="n">indexer</span><span class="o">=</span><span class="n">_indexer</span><span class="p">,</span>
+            <span class="p">)</span>
+            <span class="bp">cls</span><span class="o">.</span><span class="n">bids_database_dir</span> <span class="o">=</span> <span class="n">_db_path</span>
+        <span class="bp">cls</span><span class="o">.</span><span class="n">layout</span> <span class="o">=</span> <span class="bp">cls</span><span class="o">.</span><span class="n">_layout</span>
+        <span class="k">if</span> <span class="bp">cls</span><span class="o">.</span><span class="n">bids_filters</span><span class="p">:</span>
+            <span class="kn">from</span> <span class="nn">bids.layout</span> <span class="kn">import</span> <span class="n">Query</span>
+
+            <span class="c1"># unserialize pybids Query enum values</span>
+            <span class="k">for</span> <span class="n">acq</span><span class="p">,</span> <span class="n">filters</span> <span class="ow">in</span> <span class="bp">cls</span><span class="o">.</span><span class="n">bids_filters</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+                <span class="bp">cls</span><span class="o">.</span><span class="n">bids_filters</span><span class="p">[</span><span class="n">acq</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span>
+                    <span class="n">k</span><span class="p">:</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">Query</span><span class="p">,</span> <span class="n">v</span><span class="p">[</span><span class="mi">7</span><span class="p">:</span><span class="o">-</span><span class="mi">4</span><span class="p">])</span>
+                    <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="n">Query</span><span class="p">)</span> <span class="ow">and</span> <span class="s2">&quot;Query&quot;</span> <span class="ow">in</span> <span class="n">v</span>
+                    <span class="k">else</span> <span class="n">v</span>
+                    <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">filters</span><span class="o">.</span><span class="n">items</span><span class="p">()</span>
+                <span class="p">}</span></div></div>
+
+
+<div class="viewcode-block" id="loggers"><a class="viewcode-back" href="../../autoapi/fsqa/config/index.html#fsqa.config.loggers">[docs]</a><span class="k">class</span> <span class="nc">loggers</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;Keep loggers easily accessible (see :py:func:`init`).&quot;&quot;&quot;</span>
+
+    <span class="n">_fmt</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="si">%(asctime)s</span><span class="s2">,</span><span class="si">%(msecs)d</span><span class="s2"> </span><span class="si">%(name)-2s</span><span class="s2"> &quot;</span> <span class="s2">&quot;</span><span class="si">%(levelname)-2s</span><span class="s2">:</span><span class="se">\n\t</span><span class="s2"> </span><span class="si">%(message)s</span><span class="s2">&quot;</span>
+    <span class="n">_datefmt</span> <span class="o">=</span> <span class="s2">&quot;%y%m</span><span class="si">%d</span><span class="s2">-%H:%M:%S&quot;</span>
+
+    <span class="n">default</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">()</span>
+    <span class="sd">&quot;&quot;&quot;root logger&quot;&quot;&quot;</span>
+    <span class="n">cli</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="s2">&quot;cli&quot;</span><span class="p">)</span>
+    <span class="sd">&quot;&quot;&quot;Command-line interface logger&quot;&quot;&quot;</span>
+    <span class="n">workflow</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="s2">&quot;fsqa&quot;</span><span class="p">)</span>
+    <span class="sd">&quot;&quot;&quot;FSQA logger.&quot;&quot;&quot;</span>
+
+<div class="viewcode-block" id="loggers.init"><a class="viewcode-back" href="../../autoapi/fsqa/config/index.html#fsqa.config.loggers.init">[docs]</a>    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">init</span><span class="p">(</span><span class="bp">cls</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Logger config&quot;&quot;&quot;</span>
+        <span class="n">_handler</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">StreamHandler</span><span class="p">(</span><span class="n">stream</span><span class="o">=</span><span class="n">sys</span><span class="o">.</span><span class="n">stdout</span><span class="p">)</span>
+        <span class="n">_handler</span><span class="o">.</span><span class="n">setFormatter</span><span class="p">(</span><span class="n">logging</span><span class="o">.</span><span class="n">Formatter</span><span class="p">(</span><span class="n">fmt</span><span class="o">=</span><span class="bp">cls</span><span class="o">.</span><span class="n">_fmt</span><span class="p">,</span> <span class="n">datefmt</span><span class="o">=</span><span class="bp">cls</span><span class="o">.</span><span class="n">_datefmt</span><span class="p">))</span>
+        <span class="bp">cls</span><span class="o">.</span><span class="n">cli</span><span class="o">.</span><span class="n">addHandler</span><span class="p">(</span><span class="n">_handler</span><span class="p">)</span>
+        <span class="bp">cls</span><span class="o">.</span><span class="n">workflow</span><span class="o">.</span><span class="n">addHandler</span><span class="p">(</span><span class="n">_handler</span><span class="p">)</span></div></div>
+
+
+<div class="viewcode-block" id="from_dict"><a class="viewcode-back" href="../../autoapi/fsqa/config/index.html#fsqa.config.from_dict">[docs]</a><span class="k">def</span> <span class="nf">from_dict</span><span class="p">(</span><span class="n">settings</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Read settings from dictionary&quot;&quot;&quot;</span>
+    <span class="n">execution</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">settings</span><span class="p">)</span>
+    <span class="n">loggers</span><span class="o">.</span><span class="n">init</span><span class="p">()</span></div>
+
+
+<div class="viewcode-block" id="load"><a class="viewcode-back" href="../../autoapi/fsqa/config/index.html#fsqa.config.load">[docs]</a><span class="k">def</span> <span class="nf">load</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="n">skip</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Load settings from file&quot;&quot;&quot;</span>
+    <span class="kn">from</span> <span class="nn">toml</span> <span class="kn">import</span> <span class="n">loads</span>
+
+    <span class="n">skip</span> <span class="o">=</span> <span class="n">skip</span> <span class="ow">or</span> <span class="p">{}</span>
+    <span class="n">filename</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="n">filename</span><span class="p">)</span>
+    <span class="n">settings</span> <span class="o">=</span> <span class="n">loads</span><span class="p">(</span><span class="n">filename</span><span class="o">.</span><span class="n">read_text</span><span class="p">())</span>
+    <span class="k">for</span> <span class="n">sectionname</span><span class="p">,</span> <span class="n">configs</span> <span class="ow">in</span> <span class="n">settings</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+        <span class="k">if</span> <span class="n">sectionname</span> <span class="o">!=</span> <span class="s2">&quot;environment&quot;</span><span class="p">:</span>
+            <span class="n">section</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">sys</span><span class="o">.</span><span class="n">modules</span><span class="p">[</span><span class="vm">__name__</span><span class="p">],</span> <span class="n">sectionname</span><span class="p">)</span>
+            <span class="n">ignore</span> <span class="o">=</span> <span class="n">skip</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">sectionname</span><span class="p">)</span>
+            <span class="n">section</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">configs</span><span class="p">,</span> <span class="n">ignore</span><span class="o">=</span><span class="n">ignore</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="get"><a class="viewcode-back" href="../../autoapi/fsqa/config/index.html#fsqa.config.get">[docs]</a><span class="k">def</span> <span class="nf">get</span><span class="p">(</span><span class="n">flat</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Get config as dictionary&quot;&quot;&quot;</span>
+    <span class="n">settings</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s2">&quot;environment&quot;</span><span class="p">:</span> <span class="n">environment</span><span class="o">.</span><span class="n">get</span><span class="p">(),</span>
+        <span class="s2">&quot;execution&quot;</span><span class="p">:</span> <span class="n">execution</span><span class="o">.</span><span class="n">get</span><span class="p">(),</span>
+    <span class="p">}</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">flat</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">settings</span>
+
+    <span class="k">return</span> <span class="p">{</span>
+        <span class="s2">&quot;.&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">((</span><span class="n">section</span><span class="p">,</span> <span class="n">k</span><span class="p">)):</span> <span class="n">v</span>
+        <span class="k">for</span> <span class="n">section</span><span class="p">,</span> <span class="n">configs</span> <span class="ow">in</span> <span class="n">settings</span><span class="o">.</span><span class="n">items</span><span class="p">()</span>
+        <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">configs</span><span class="o">.</span><span class="n">items</span><span class="p">()</span>
+    <span class="p">}</span></div>
+
+
+<div class="viewcode-block" id="dumps"><a class="viewcode-back" href="../../autoapi/fsqa/config/index.html#fsqa.config.dumps">[docs]</a><span class="k">def</span> <span class="nf">dumps</span><span class="p">():</span>
+    <span class="sd">&quot;&quot;&quot;Format config into toml.&quot;&quot;&quot;</span>
+    <span class="kn">from</span> <span class="nn">toml</span> <span class="kn">import</span> <span class="n">dumps</span>
+
+    <span class="k">return</span> <span class="n">dumps</span><span class="p">(</span><span class="n">get</span><span class="p">())</span></div>
+
+
+<div class="viewcode-block" id="to_filename"><a class="viewcode-back" href="../../autoapi/fsqa/config/index.html#fsqa.config.to_filename">[docs]</a><span class="k">def</span> <span class="nf">to_filename</span><span class="p">(</span><span class="n">filename</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Write settings to file.&quot;&quot;&quot;</span>
+    <span class="n">filename</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="n">filename</span><span class="p">)</span>
+    <span class="n">filename</span><span class="o">.</span><span class="n">write_text</span><span class="p">(</span><span class="n">dumps</span><span class="p">())</span></div>
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2023, Lezlie Espana.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+</body>
+</html>

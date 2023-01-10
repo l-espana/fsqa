@@ -1,0 +1,26 @@
+:py:mod:`fsqa`
+==============
+
+.. py:module:: fsqa
+
+
+Subpackages
+-----------
+.. toctree::
+   :titlesonly:
+   :maxdepth: 3
+
+   cli/index.rst
+
+
+Submodules
+----------
+.. toctree::
+   :titlesonly:
+   :maxdepth: 1
+
+   __main__/index.rst
+   _version/index.rst
+   config/index.rst
+   freesurfer/index.rst
+   reports/index.rst

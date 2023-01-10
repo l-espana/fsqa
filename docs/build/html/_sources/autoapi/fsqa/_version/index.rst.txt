@@ -1,0 +1,11 @@
+:py:mod:`fsqa._version`
+=======================
+
+.. py:module:: fsqa._version
+
+
+Module Contents
+---------------
+
+.. py:data:: __version__
+   :annotation: = 0.1.0

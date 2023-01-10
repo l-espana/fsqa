@@ -1,0 +1,62 @@
+:py:mod:`fsqa.reports`
+======================
+
+.. py:module:: fsqa.reports
+
+.. autoapi-nested-parse::
+
+   Utility class for generating a config file from a jinja template.
+   https://github.com/oesteban/endofday/blob/f2e79c625d648ef45b08cc1f11fd0bd84342d604/endofday/core/template.py
+
+   Along with other report-related functions.
+
+
+
+Module Contents
+---------------
+
+Classes
+~~~~~~~
+
+.. autoapisummary::
+
+   fsqa.reports.Template
+
+
+
+Functions
+~~~~~~~~~
+
+.. autoapisummary::
+
+   fsqa.reports.read_report_snippet
+   fsqa.reports.gen_html
+   fsqa.reports.cleanup
+
+
+
+.. py:class:: Template(template_str)
+
+   Bases: :py:obj:`object`
+
+   .. py:method:: compile(configs)
+
+      Generates a string with the replacements
+
+
+   .. py:method:: generate_conf(configs, path)
+
+      Saves the outcome after replacement on the template to file
+
+
+
+.. py:function:: read_report_snippet(in_file)
+
+   Add an image snippet into the report.
+   Modified from nipreps under Apache 2 license.
+
+
+.. py:function:: gen_html(output_dir, imgs, out_file, template)
+
+
+.. py:function:: cleanup(subject_dir)

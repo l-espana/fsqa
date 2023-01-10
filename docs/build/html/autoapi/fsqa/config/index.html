@@ -1,0 +1,415 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>fsqa.config &mdash; fsqa 0.1.0 documentation</title>
+      <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="../../../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" type="text/css" />
+      <link rel="stylesheet" href="../../../_static/graphviz.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+
+        <script data-url_root="../../../" id="documentation_options" src="../../../_static/documentation_options.js"></script>
+        <script src="../../../_static/jquery.js"></script>
+        <script src="../../../_static/underscore.js"></script>
+        <script src="../../../_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script src="../../../_static/doctools.js"></script>
+        <script src="../../../_static/sphinx_highlight.js"></script>
+    <script src="../../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" />
+    <link rel="next" title="fsqa.freesurfer" href="../freesurfer/index.html" />
+    <link rel="prev" title="fsqa._version" href="../_version/index.html" />
+</head>
+
+<body class="wy-body-for-nav">
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="../../../index.html" class="icon icon-home"> fsqa
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="../../index.html">API Reference</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="../index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">fsqa</span></code></a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="../index.html#subpackages">Subpackages</a></li>
+<li class="toctree-l3 current"><a class="reference internal" href="../index.html#submodules">Submodules</a><ul class="current">
+<li class="toctree-l4"><a class="reference internal" href="../__main__/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">fsqa.__main__</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../_version/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">fsqa._version</span></code></a></li>
+<li class="toctree-l4 current"><a class="current reference internal" href="#"><code class="xref py py-mod docutils literal notranslate"><span class="pre">fsqa.config</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../freesurfer/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">fsqa.freesurfer</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../reports/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">fsqa.reports</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">fsqa</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../index.html" class="icon icon-home"></a></li>
+          <li class="breadcrumb-item"><a href="../../index.html">API Reference</a></li>
+          <li class="breadcrumb-item"><a href="../index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">fsqa</span></code></a></li>
+      <li class="breadcrumb-item active"><code class="xref py py-mod docutils literal notranslate"><span class="pre">fsqa.config</span></code></li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../../../_sources/autoapi/fsqa/config/index.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+
+  <section id="module-fsqa.config">
+<span id="fsqa-config"></span><h1><a class="reference internal" href="#module-fsqa.config" title="fsqa.config"><code class="xref py py-mod docutils literal notranslate"><span class="pre">fsqa.config</span></code></a><a class="headerlink" href="#module-fsqa.config" title="Permalink to this heading"></a></h1>
+<p>Config file for FSQA basic settings.
+Handles BIDS data, FreeSurfer environment, etc.</p>
+<section id="module-contents">
+<h2>Module Contents<a class="headerlink" href="#module-contents" title="Permalink to this heading"></a></h2>
+<section id="classes">
+<h3>Classes<a class="headerlink" href="#classes" title="Permalink to this heading"></a></h3>
+<table class="autosummary longtable docutils align-default">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 90%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#fsqa.config._Config" title="fsqa.config._Config"><code class="xref py py-obj docutils literal notranslate"><span class="pre">_Config</span></code></a></p></td>
+<td><p>Abstract config class</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#fsqa.config.environment" title="fsqa.config.environment"><code class="xref py py-obj docutils literal notranslate"><span class="pre">environment</span></code></a></p></td>
+<td><p>Platform and environment info</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#fsqa.config.execution" title="fsqa.config.execution"><code class="xref py py-obj docutils literal notranslate"><span class="pre">execution</span></code></a></p></td>
+<td><p>FreeSurfer related settings</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#fsqa.config.loggers" title="fsqa.config.loggers"><code class="xref py py-obj docutils literal notranslate"><span class="pre">loggers</span></code></a></p></td>
+<td><p>Keep loggers easily accessible (see <code class="xref py py-func docutils literal notranslate"><span class="pre">init()</span></code>).</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="functions">
+<h3>Functions<a class="headerlink" href="#functions" title="Permalink to this heading"></a></h3>
+<table class="autosummary longtable docutils align-default">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 90%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#fsqa.config.from_dict" title="fsqa.config.from_dict"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_dict</span></code></a>(settings)</p></td>
+<td><p>Read settings from dictionary</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#fsqa.config.load" title="fsqa.config.load"><code class="xref py py-obj docutils literal notranslate"><span class="pre">load</span></code></a>(filename[, skip])</p></td>
+<td><p>Load settings from file</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#fsqa.config.get" title="fsqa.config.get"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get</span></code></a>([flat])</p></td>
+<td><p>Get config as dictionary</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#fsqa.config.dumps" title="fsqa.config.dumps"><code class="xref py py-obj docutils literal notranslate"><span class="pre">dumps</span></code></a>()</p></td>
+<td><p>Format config into toml.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#fsqa.config.to_filename" title="fsqa.config.to_filename"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_filename</span></code></a>(filename)</p></td>
+<td><p>Write settings to file.</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="attributes">
+<h3>Attributes<a class="headerlink" href="#attributes" title="Permalink to this heading"></a></h3>
+<table class="autosummary longtable docutils align-default">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 90%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#fsqa.config.CONFIG_FILENAME" title="fsqa.config.CONFIG_FILENAME"><code class="xref py py-obj docutils literal notranslate"><span class="pre">CONFIG_FILENAME</span></code></a></p></td>
+<td><p></p></td>
+</tr>
+</tbody>
+</table>
+<dl class="py data">
+<dt class="sig sig-object py" id="fsqa.config.CONFIG_FILENAME">
+<span class="sig-prename descclassname"><span class="pre">fsqa.config.</span></span><span class="sig-name descname"><span class="pre">CONFIG_FILENAME</span></span><em class="property"><span class="w"> </span><span class="pre">=</span> <span class="pre">fsqa.toml</span></em><a class="headerlink" href="#fsqa.config.CONFIG_FILENAME" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="fsqa.config._Config">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">fsqa.config.</span></span><span class="sig-name descname"><span class="pre">_Config</span></span><a class="reference internal" href="../../../_modules/fsqa/config.html#_Config"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#fsqa.config._Config" title="Permalink to this definition"></a></dt>
+<dd><p>Abstract config class</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="fsqa.config._Config._paths">
+<span class="sig-name descname"><span class="pre">_paths</span></span><a class="headerlink" href="#fsqa.config._Config._paths" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="fsqa.config._Config.load">
+<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">load</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">settings</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">init</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ignore</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/fsqa/config.html#_Config.load"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#fsqa.config._Config.load" title="Permalink to this definition"></a></dt>
+<dd><p>Load settings from dictionary</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="fsqa.config._Config.get">
+<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">get</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/fsqa/config.html#_Config.get"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#fsqa.config._Config.get" title="Permalink to this definition"></a></dt>
+<dd><p>Return defined settings</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="fsqa.config.environment">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">fsqa.config.</span></span><span class="sig-name descname"><span class="pre">environment</span></span><a class="reference internal" href="../../../_modules/fsqa/config.html#environment"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#fsqa.config.environment" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="#fsqa.config._Config" title="fsqa.config._Config"><code class="xref py py-obj docutils literal notranslate"><span class="pre">_Config</span></code></a></p>
+<p>Platform and environment info</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="fsqa.config.environment.exec_env">
+<span class="sig-name descname"><span class="pre">exec_env</span></span><a class="headerlink" href="#fsqa.config.environment.exec_env" title="Permalink to this definition"></a></dt>
+<dd><p>Execution platform string</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="fsqa.config.environment.version">
+<span class="sig-name descname"><span class="pre">version</span></span><a class="headerlink" href="#fsqa.config.environment.version" title="Permalink to this definition"></a></dt>
+<dd><p>FSQA version</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="fsqa.config.execution">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">fsqa.config.</span></span><span class="sig-name descname"><span class="pre">execution</span></span><a class="reference internal" href="../../../_modules/fsqa/config.html#execution"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#fsqa.config.execution" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="#fsqa.config._Config" title="fsqa.config._Config"><code class="xref py py-obj docutils literal notranslate"><span class="pre">_Config</span></code></a></p>
+<p>FreeSurfer related settings</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="fsqa.config.execution.bids_dir">
+<span class="sig-name descname"><span class="pre">bids_dir</span></span><a class="headerlink" href="#fsqa.config.execution.bids_dir" title="Permalink to this definition"></a></dt>
+<dd><p>Existing path to BIDS-formatted data</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="fsqa.config.execution.freesurfer_home">
+<span class="sig-name descname"><span class="pre">freesurfer_home</span></span><a class="headerlink" href="#fsqa.config.execution.freesurfer_home" title="Permalink to this definition"></a></dt>
+<dd><p>FreeSurfer Home directory</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="fsqa.config.execution.fs_license">
+<span class="sig-name descname"><span class="pre">fs_license</span></span><a class="headerlink" href="#fsqa.config.execution.fs_license" title="Permalink to this definition"></a></dt>
+<dd><p>FreeSurfer license file</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="fsqa.config.execution.keep">
+<span class="sig-name descname"><span class="pre">keep</span></span><em class="property"><span class="w"> </span><span class="pre">=</span> <span class="pre">False</span></em><a class="headerlink" href="#fsqa.config.execution.keep" title="Permalink to this definition"></a></dt>
+<dd><p>Keep intermediate files or not</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="fsqa.config.execution.layout">
+<span class="sig-name descname"><span class="pre">layout</span></span><a class="headerlink" href="#fsqa.config.execution.layout" title="Permalink to this definition"></a></dt>
+<dd><p>A <code class="xref py py-class docutils literal notranslate"><span class="pre">BIDSLayout</span></code> object, see <a class="reference internal" href="#fsqa.config.execution.init" title="fsqa.config.execution.init"><code class="xref py py-func docutils literal notranslate"><span class="pre">init()</span></code></a>.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="fsqa.config.execution.log_dir">
+<span class="sig-name descname"><span class="pre">log_dir</span></span><a class="headerlink" href="#fsqa.config.execution.log_dir" title="Permalink to this definition"></a></dt>
+<dd><p>Log directory</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="fsqa.config.execution.num_imgs">
+<span class="sig-name descname"><span class="pre">num_imgs</span></span><em class="property"><span class="w"> </span><span class="pre">=</span> <span class="pre">10</span></em><a class="headerlink" href="#fsqa.config.execution.num_imgs" title="Permalink to this definition"></a></dt>
+<dd><p>Number of mosaic images to generate. Default 10.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="fsqa.config.execution.output_dir">
+<span class="sig-name descname"><span class="pre">output_dir</span></span><a class="headerlink" href="#fsqa.config.execution.output_dir" title="Permalink to this definition"></a></dt>
+<dd><p>Folder where reports will be stored</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="fsqa.config.execution.output_layout">
+<span class="sig-name descname"><span class="pre">output_layout</span></span><em class="property"><span class="w"> </span><span class="pre">=</span> <span class="pre">bids</span></em><a class="headerlink" href="#fsqa.config.execution.output_layout" title="Permalink to this definition"></a></dt>
+<dd><p>Layout of derivatives within output_dir</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="fsqa.config.execution.participant_label">
+<span class="sig-name descname"><span class="pre">participant_label</span></span><a class="headerlink" href="#fsqa.config.execution.participant_label" title="Permalink to this definition"></a></dt>
+<dd><p>List of participant ids to be processed</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="fsqa.config.execution.run_uuid">
+<span class="sig-name descname"><span class="pre">run_uuid</span></span><a class="headerlink" href="#fsqa.config.execution.run_uuid" title="Permalink to this definition"></a></dt>
+<dd><p>Run identifier</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="fsqa.config.execution.subjects_dir">
+<span class="sig-name descname"><span class="pre">subjects_dir</span></span><a class="headerlink" href="#fsqa.config.execution.subjects_dir" title="Permalink to this definition"></a></dt>
+<dd><p>FreeSurfer’s subjects directory</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="fsqa.config.execution.work_dir">
+<span class="sig-name descname"><span class="pre">work_dir</span></span><a class="headerlink" href="#fsqa.config.execution.work_dir" title="Permalink to this definition"></a></dt>
+<dd><p>Path to working directory for intermediate files</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="fsqa.config.execution._layout">
+<span class="sig-name descname"><span class="pre">_layout</span></span><a class="headerlink" href="#fsqa.config.execution._layout" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="fsqa.config.execution._paths">
+<span class="sig-name descname"><span class="pre">_paths</span></span><em class="property"><span class="w"> </span><span class="pre">=</span> <span class="pre">['bids_dir',</span> <span class="pre">'fs_subjects_dir',</span> <span class="pre">'layout',</span> <span class="pre">'output_dir',</span> <span class="pre">'work_dir']</span></em><a class="headerlink" href="#fsqa.config.execution._paths" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="fsqa.config.execution.init">
+<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">init</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">update</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/fsqa/config.html#execution.init"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#fsqa.config.execution.init" title="Permalink to this definition"></a></dt>
+<dd><p>Create a new BIDS Layout accessible with <a class="reference internal" href="#fsqa.config.execution.layout" title="fsqa.config.execution.layout"><code class="xref py py-attr docutils literal notranslate"><span class="pre">layout</span></code></a>.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="fsqa.config.loggers">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">fsqa.config.</span></span><span class="sig-name descname"><span class="pre">loggers</span></span><a class="reference internal" href="../../../_modules/fsqa/config.html#loggers"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#fsqa.config.loggers" title="Permalink to this definition"></a></dt>
+<dd><p>Keep loggers easily accessible (see <a class="reference internal" href="#fsqa.config.loggers.init" title="fsqa.config.loggers.init"><code class="xref py py-func docutils literal notranslate"><span class="pre">init()</span></code></a>).</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="fsqa.config.loggers._fmt">
+<span class="sig-name descname"><span class="pre">_fmt</span></span><em class="property"><span class="w"> </span><span class="pre">=</span> <span class="pre">Multiline-String</span></em><a class="headerlink" href="#fsqa.config.loggers._fmt" title="Permalink to this definition"></a></dt>
+<dd><blockquote>
+<div><details><summary>Show Value</summary><div class="highlight-text notranslate"><div class="highlight"><pre><span></span><span class="linenos">1</span>%(asctime)s,%(msecs)d %(name)-2s %(levelname)-2s:
+<span class="linenos">2</span>      %(message)s
+</pre></div>
+</div>
+</details></div></blockquote>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="fsqa.config.loggers._datefmt">
+<span class="sig-name descname"><span class="pre">_datefmt</span></span><em class="property"><span class="w"> </span><span class="pre">=</span> <span class="pre">%y%m%d-%H:%M:%S</span></em><a class="headerlink" href="#fsqa.config.loggers._datefmt" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="fsqa.config.loggers.default">
+<span class="sig-name descname"><span class="pre">default</span></span><a class="headerlink" href="#fsqa.config.loggers.default" title="Permalink to this definition"></a></dt>
+<dd><p>root logger</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="fsqa.config.loggers.cli">
+<span class="sig-name descname"><span class="pre">cli</span></span><a class="headerlink" href="#fsqa.config.loggers.cli" title="Permalink to this definition"></a></dt>
+<dd><p>Command-line interface logger</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="fsqa.config.loggers.workflow">
+<span class="sig-name descname"><span class="pre">workflow</span></span><a class="headerlink" href="#fsqa.config.loggers.workflow" title="Permalink to this definition"></a></dt>
+<dd><p>FSQA logger.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="fsqa.config.loggers.init">
+<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">init</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/fsqa/config.html#loggers.init"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#fsqa.config.loggers.init" title="Permalink to this definition"></a></dt>
+<dd><p>Logger config</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="fsqa.config.from_dict">
+<span class="sig-prename descclassname"><span class="pre">fsqa.config.</span></span><span class="sig-name descname"><span class="pre">from_dict</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">settings</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/fsqa/config.html#from_dict"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#fsqa.config.from_dict" title="Permalink to this definition"></a></dt>
+<dd><p>Read settings from dictionary</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="fsqa.config.load">
+<span class="sig-prename descclassname"><span class="pre">fsqa.config.</span></span><span class="sig-name descname"><span class="pre">load</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">filename</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">skip</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/fsqa/config.html#load"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#fsqa.config.load" title="Permalink to this definition"></a></dt>
+<dd><p>Load settings from file</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="fsqa.config.get">
+<span class="sig-prename descclassname"><span class="pre">fsqa.config.</span></span><span class="sig-name descname"><span class="pre">get</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">flat</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/fsqa/config.html#get"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#fsqa.config.get" title="Permalink to this definition"></a></dt>
+<dd><p>Get config as dictionary</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="fsqa.config.dumps">
+<span class="sig-prename descclassname"><span class="pre">fsqa.config.</span></span><span class="sig-name descname"><span class="pre">dumps</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/fsqa/config.html#dumps"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#fsqa.config.dumps" title="Permalink to this definition"></a></dt>
+<dd><p>Format config into toml.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="fsqa.config.to_filename">
+<span class="sig-prename descclassname"><span class="pre">fsqa.config.</span></span><span class="sig-name descname"><span class="pre">to_filename</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">filename</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/fsqa/config.html#to_filename"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#fsqa.config.to_filename" title="Permalink to this definition"></a></dt>
+<dd><p>Write settings to file.</p>
+</dd></dl>
+
+</section>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="../_version/index.html" class="btn btn-neutral float-left" title="fsqa._version" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="../freesurfer/index.html" class="btn btn-neutral float-right" title="fsqa.freesurfer" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2023, Lezlie Espana.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+</body>
+</html>

@@ -1,0 +1,14 @@
+:py:mod:`fsqa.cli`
+==================
+
+.. py:module:: fsqa.cli
+
+
+Submodules
+----------
+.. toctree::
+   :titlesonly:
+   :maxdepth: 1
+
+   parser/index.rst
+   run/index.rst

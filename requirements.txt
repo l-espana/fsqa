@@ -1,0 +1,5 @@
+nipype
+niworkflows
+jinja2
+matplotlib
+nilearn

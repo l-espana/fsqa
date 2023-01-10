@@ -1,0 +1,27 @@
+:py:mod:`fsqa.cli.run`
+======================
+
+.. py:module:: fsqa.cli.run
+
+.. autoapi-nested-parse::
+
+   Main workflow.
+
+
+
+Module Contents
+---------------
+
+
+Functions
+~~~~~~~~~
+
+.. autoapisummary::
+
+   fsqa.cli.run.main
+
+
+
+.. py:function:: main()
+
+   Entry point.

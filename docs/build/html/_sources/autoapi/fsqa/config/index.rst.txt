@@ -1,0 +1,253 @@
+:py:mod:`fsqa.config`
+=====================
+
+.. py:module:: fsqa.config
+
+.. autoapi-nested-parse::
+
+   Config file for FSQA basic settings.
+   Handles BIDS data, FreeSurfer environment, etc.
+
+
+
+Module Contents
+---------------
+
+Classes
+~~~~~~~
+
+.. autoapisummary::
+
+   fsqa.config._Config
+   fsqa.config.environment
+   fsqa.config.execution
+   fsqa.config.loggers
+
+
+
+Functions
+~~~~~~~~~
+
+.. autoapisummary::
+
+   fsqa.config.from_dict
+   fsqa.config.load
+   fsqa.config.get
+   fsqa.config.dumps
+   fsqa.config.to_filename
+
+
+
+Attributes
+~~~~~~~~~~
+
+.. autoapisummary::
+
+   fsqa.config.CONFIG_FILENAME
+
+
+.. py:data:: CONFIG_FILENAME
+   :annotation: = fsqa.toml
+
+
+
+.. py:class:: _Config
+
+   Abstract config class
+
+   .. py:attribute:: _paths
+
+
+
+
+   .. py:method:: load(settings, init=True, ignore=None)
+      :classmethod:
+
+      Load settings from dictionary
+
+
+   .. py:method:: get()
+      :classmethod:
+
+      Return defined settings
+
+
+
+.. py:class:: environment
+
+   Bases: :py:obj:`_Config`
+
+   Platform and environment info
+
+   .. py:attribute:: exec_env
+
+
+      Execution platform string
+
+   .. py:attribute:: version
+
+
+      FSQA version
+
+
+.. py:class:: execution
+
+   Bases: :py:obj:`_Config`
+
+   FreeSurfer related settings
+
+   .. py:attribute:: bids_dir
+
+
+      Existing path to BIDS-formatted data
+
+   .. py:attribute:: freesurfer_home
+
+
+      FreeSurfer Home directory
+
+   .. py:attribute:: fs_license
+
+
+      FreeSurfer license file
+
+   .. py:attribute:: keep
+      :annotation: = False
+
+      Keep intermediate files or not
+
+   .. py:attribute:: layout
+
+
+      A :py:class:`~bids.layout.BIDSLayout` object, see :py:func:`init`.
+
+   .. py:attribute:: log_dir
+
+
+      Log directory
+
+   .. py:attribute:: num_imgs
+      :annotation: = 10
+
+      Number of mosaic images to generate. Default 10.
+
+   .. py:attribute:: output_dir
+
+
+      Folder where reports will be stored
+
+   .. py:attribute:: output_layout
+      :annotation: = bids
+
+      Layout of derivatives within output_dir
+
+   .. py:attribute:: participant_label
+
+
+      List of participant ids to be processed
+
+   .. py:attribute:: run_uuid
+
+
+      Run identifier
+
+   .. py:attribute:: subjects_dir
+
+
+      FreeSurfer's subjects directory
+
+   .. py:attribute:: work_dir
+
+
+      Path to working directory for intermediate files
+
+   .. py:attribute:: _layout
+
+
+
+
+   .. py:attribute:: _paths
+      :annotation: = ['bids_dir', 'fs_subjects_dir', 'layout', 'output_dir', 'work_dir']
+
+
+
+   .. py:method:: init(update=False)
+      :classmethod:
+
+      Create a new BIDS Layout accessible with :attr:`~execution.layout`.
+
+
+
+.. py:class:: loggers
+
+   Keep loggers easily accessible (see :py:func:`init`).
+
+   .. py:attribute:: _fmt
+      :annotation: = Multiline-String
+
+       .. raw:: html
+
+           <details><summary>Show Value</summary>
+
+       .. code-block:: text
+           :linenos:
+
+           %(asctime)s,%(msecs)d %(name)-2s %(levelname)-2s:
+           	 %(message)s
+
+       .. raw:: html
+
+           </details>
+
+
+
+   .. py:attribute:: _datefmt
+      :annotation: = %y%m%d-%H:%M:%S
+
+
+
+   .. py:attribute:: default
+
+
+      root logger
+
+   .. py:attribute:: cli
+
+
+      Command-line interface logger
+
+   .. py:attribute:: workflow
+
+
+      FSQA logger.
+
+   .. py:method:: init()
+      :classmethod:
+
+      Logger config
+
+
+
+.. py:function:: from_dict(settings)
+
+   Read settings from dictionary
+
+
+.. py:function:: load(filename, skip=None)
+
+   Load settings from file
+
+
+.. py:function:: get(flat=False)
+
+   Get config as dictionary
+
+
+.. py:function:: dumps()
+
+   Format config into toml.
+
+
+.. py:function:: to_filename(filename)
+
+   Write settings to file.

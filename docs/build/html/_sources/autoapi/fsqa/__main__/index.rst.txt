@@ -1,0 +1,4 @@
+:py:mod:`fsqa.__main__`
+=======================
+
+.. py:module:: fsqa.__main__
