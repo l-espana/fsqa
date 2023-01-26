@@ -1,1 +1,7 @@
 dist/
+__pycache__/
+*.pyc
+*png
+*svg
+*orig.nii.gz
+*xfm

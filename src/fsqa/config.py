@@ -23,7 +23,7 @@ import sys
 import logging
 from pathlib import Path
 from uuid import uuid4
-from . import __version__
+from fsqa import __version__
 
 CONFIG_FILENAME = "fsqa.toml"
 

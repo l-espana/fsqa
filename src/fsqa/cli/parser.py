@@ -16,16 +16,13 @@
 # limitations under the License.
 
 """FSQA Parser"""
-# need subjects_dir, freesurfer home, subject, output dir,
-# add things for number of slice, etc.?
-# add bids stuff too
 
 # import os
 from pathlib import Path
 from argparse import ArgumentDefaultsHelpFormatter, ArgumentParser
 from functools import partial
 
-from .. import config
+from fsqa import config
 
 
 def _build_parser():

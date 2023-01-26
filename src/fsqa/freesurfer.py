@@ -25,7 +25,7 @@ import pandas as pd
 import numpy as np
 from matplotlib import colors
 from matplotlib import pyplot as plt
-from importlib import resources
+from pkg_resources import resource_filename as pkgrf
 
 from nilearn import plotting
 from nipype.interfaces.freesurfer.preprocess import MRIConvert
@@ -36,6 +36,16 @@ from niworkflows.interfaces.reportlets.registration import SimpleBeforeAfterRPT
 def check_reconall(subject_fsdir):
     """
     Verifies that the subject's FreeSurfer recon completed successfully.
+
+    Parameters
+    ----------
+    subject_fsdir : path or str representing a path to a directory
+        Path to a subject's FreeSurfer directory.
+
+    Returns
+    -------
+    bool
+        True if FreeSurfer finished successfully, False otherwise.
     """
     log = os.path.join(subject_fsdir, "scripts", "recon-all.log")
     if os.path.exists(log):
@@ -54,9 +64,19 @@ def get_colormap(freesurfer_home):
     Generates matplotlib colormap from FreeSurfer LUT.
     Code from:
     https://github.com/Deep-MI/qatools-python/blob/freesurfer-module-releases/qatoolspython/createScreenshots.py
+
+    Parameters
+    ----------
+    freesurfer_home : path or str representing a path to a directory
+       Path corresponding to FREESURFER_HOME env var.
+
+    Returns
+    -------
+    colormap : matplotlib.colors.ListedColormap
+        A matplotlib compatible FreeSurfer colormap.
     """
     lut = pd.read_csv(
-        os.path.join(freesurfer_home, "FreeSurferLUT.txt"),
+        os.path.join(freesurfer_home, "FreeSurferColorLUT.txt"),
         sep=" ",
         comment="#",
         header=None,
@@ -75,6 +95,18 @@ def get_tlrc_report(subject_fsdir, output_dir):
     """
     Computes inverse talairach transform from FreeSurfer output and
     replicates the tkregister2 registration images for QA.
+
+    Parameters
+    ----------
+    subject_fsdir : path or str representing a path to a directory
+        Path to a subject's FreeSurfer directory.
+    output_dir : path or str representing a path to a directory
+        Working/output directory.
+
+    Returns
+    -------
+    svg
+        SVG file generated from the niworkflows SimpleBeforeAfterRPT
     """
     # get inverse transform
     xfm = np.genfromtxt(
@@ -102,11 +134,12 @@ def get_tlrc_report(subject_fsdir, output_dir):
 
     # use FSL to convert template file to subject original space
     flirt = FLIRT(
-        in_file=resources.path("fsqa.data", "mni305.cor.nii.gz"),
+        in_file=pkgrf("fsqa.data", "mni305.cor.nii.gz"),
         reference=os.path.join(output_dir, "orig.nii.gz"),
         out_file=os.path.join(output_dir, "mni2orig.nii.gz"),
         in_matrix_file=os.path.join(output_dir, "inv.xfm"),
         apply_xfm=True,
+        out_matrix_file=os.path.join(output_dir, "out.mat"),
     )
     flirt.run()
 
@@ -114,9 +147,10 @@ def get_tlrc_report(subject_fsdir, output_dir):
     report = SimpleBeforeAfterRPT(
         before=os.path.join(subject_fsdir, "mri", "orig.mgz"),
         after=os.path.join(output_dir, "mni2orig.nii.gz"),
-        wm_seg=os.path.join(subject_fsdir, "mri", "wm.mgz"),
+        wm_seg=subject_fsdir / "mri" / "wm.mgz",
         before_label="Subject Orig",
         after_label="Template",
+        out_report=os.path.join(output_dir, "tlrc.svg"),
     )
     result = report.run()
     output = result.outputs.out_report
@@ -124,8 +158,28 @@ def get_tlrc_report(subject_fsdir, output_dir):
     return output
 
 
-def get_aseg_plots(subject_fsdir, output_dir, num_imgs):
-    colormap = get_colormap()
+def get_aseg_plots(freesurfer_home, subject_fsdir, output_dir, num_imgs):
+    """Generates multiple images. One contains the
+    parcellation and segmentation images from FreeSurfer.
+    The other contains multiple views of the subject surface in 3d,
+    with parcellation information overalyed.
+
+    Parameters
+    ----------
+    subject_fsdir : path or str representing a path to a directory
+        Path to a subject's FreeSurfer directory.
+    output_dir : path or str representing a path to a directory
+        Working/output directory.
+    num_imgs : int, optional
+        Number of images to use in the parcellation and
+        segmentation image.
+
+    Returns
+    -------
+    imgs : list
+        A list of PNG images generated.
+    """
+    colormap = get_colormap(freesurfer_home)
 
     # get parcellation and segmentation images
     plotting.plot_roi(
@@ -136,7 +190,7 @@ def get_aseg_plots(subject_fsdir, output_dir, num_imgs):
         dim=-1,
         cut_coords=num_imgs,
         alpha=0.5,
-        output_file=os.path.join(output_dir, "aseg.png"),
+        output_file=os.path.join(output_dir, "aseg.svg"),
     )
     display = plotting.plot_anat(
         os.path.join(subject_fsdir, "mri", "brainmask.mgz"),
@@ -156,7 +210,7 @@ def get_aseg_plots(subject_fsdir, output_dir, num_imgs):
         linewidths=0.5,
         levels=[0.5],
     )
-    display.savefig(os.path.join(output_dir, "aparc.png"))
+    display.savefig(os.path.join(output_dir, "aparc.svg"))
     display.close()
 
     # get surface images
@@ -171,7 +225,7 @@ def get_aseg_plots(subject_fsdir, output_dir, num_imgs):
         label_files = {pial: "pial", inflated: "infl", white: "white"}
 
         for surf, label in label_files.items():
-            fig, axs = plt.subplots(2, 3, subplot_kw={"project": "3d"})
+            fig, axs = plt.subplots(2, 3, subplot_kw={"projection": "3d"})
             plotting.plot_surf_roi(
                 surf,
                 annot,
@@ -246,11 +300,11 @@ def get_aseg_plots(subject_fsdir, output_dir, num_imgs):
             )
 
             plt.savefig(
-                os.path.join(output_dir, f"{key}_{label}.png"),
+                os.path.join(output_dir, f"{key}_{label}.svg"),
                 dpi=300,
-                format="png",
+                format="svg",
             )
             plt.close()
 
-    imgs = sorted(glob.glob(f"{output_dir}/*png"))
+    imgs = sorted(glob.glob(f"{output_dir}/*svg"))
     return imgs

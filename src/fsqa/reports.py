@@ -25,13 +25,15 @@ Along with other report-related functions.
 import os
 import datetime
 import jinja2
-import base64
-import re
 
-from nipype.utils.filemanip import split_filename
+# import base64
+
+# from nipype.utils.filemanip import split_filename
 
 
 class Template(object):
+    """Simplified jinja2 template class from oesteban."""
+
     def __init__(self, template_str):
         self.template_str = template_str
         self.env = jinja2.Environment(
@@ -52,43 +54,69 @@ class Template(object):
             output_file.write(output)
 
 
-def read_report_snippet(in_file):
+def read_img_data(in_file):
     """
     Add an image snippet into the report.
-    Modified from nipreps under Apache 2 license.
+    Modified from nipreps/mriqc/reports/utils.py under Apache 2 license
+    to include PNG support.
+
+    Parameters
+    ----------
+    in_file : path or str representing path to image file
+        Image file to include in html report.
+
+    Returns
+    -------
+    str
+        Tag generated from the image that can be inserted
+        in the html report.
     """
 
-    _, _, ext = split_filename(in_file)
+    """
+    if "svg" in ext:
+        svg_uri = base64.b64encode(open(in_file, "rb").read()).decode("utf-8")
+        svg_tag = "<img src='data:image/svg+xml;base64,{0}'>".format(str(svg_uri))
+        return "\n".join(svg_tag)
+    if "png" in ext:
+        png_uri = base64.b64encode(open(in_file, "rb").read()).decode("utf-8")
+        png_tag = "<img src='data:image/png;base64,{0}'>".format(str(png_uri))
+        return "\n".join(png_tag)
+    """
+    # _, _, ext = split_filename(in_file)
     with open(in_file) as img_file:
-        if "svg" in ext:
-            svg_tag_line = 0
-            content = img_file.read().split("\n")
-            corrected = []
-            for idx, line in enumerate(content):
-                if "<svg" in line:
-                    line = re.sub(' height="[0-9.]+[a-z]*"', "", line)
-                    line = re.sub(' width="[0-9.]+[a-z]*"', "", line)
-                    if svg_tag_line == 0:
-                        svg_tag_line = idx
-                corrected.append(line)
-            return "\n".join(corrected[svg_tag_line:])
-        elif "png" in ext:
-            png_uri = base64.b64encode(open(img_file, "rb").read()).decode("utf-8")
-            png_tag = "<img src='data:image/png;base64,{0}'>".format(png_uri)
-            return "\n".join(png_tag)
+        return img_file.read()
 
 
 def gen_html(output_dir, imgs, out_file, template):
+    """Generates the html report file given a set of images
+    and the html template to use.
+
+    Parameters
+    ----------
+    output_dir : path or str representing a path to a directory
+        HTML output directory.
+    imgs : list
+        List of SVG/PNG string tags to be input in html report.
+    out_file : str
+        File name for the html report.
+    template : class::Template
+        Jinja2 template to be used for html report.
+
+    Returns
+    -------
+    out_file : str or path representing a file
+        HTML report file path.
+    """
     tlrc = []
     aseg = []
     surf = []
 
     for img in imgs:
-        if "svg" in img:
-            tag = read_report_snippet(img)
+        if "tlrc" in img:
+            tag = read_img_data(img)
             tlrc.append(tag)
         elif "aseg" in img or "aparc" in img:
-            tag = read_report_snippet(img)
+            tag = read_img_data(img)
             aseg.append(tag)
         else:
             labels = {
@@ -99,8 +127,8 @@ def gen_html(output_dir, imgs, out_file, template):
                 "lh_white": "LH White Matter",
                 "rh_white": "RH White Matter",
             }
-            tag = read_report_snippet(img)
-            surf_tuple = (labels[os.path.basename(img).split(".")[0]], tag, img)
+            tag = read_img_data(img)
+            surf_tuple = (labels[os.path.basename(img).split(".")[0]], tag)
             surf.append(surf_tuple)
 
     _config = {
@@ -118,10 +146,18 @@ def gen_html(output_dir, imgs, out_file, template):
 
 
 def cleanup(subject_dir):
-    file_exts = [".svg", ".png", ".xfm", ".nii.gz"]
+    """Function to remove intermediate files if indicated.
+
+    Parameters
+    ----------
+    subject_dir : path or str representing path to a directory
+        Working subject directory where intermediate files are put.
+    """
+    file_exts = [".svg", ".xfm", ".nii.gz", ".mat"]
     for root, _, files in os.walk(subject_dir):
         for ff in files:
-            if ff.endswith([ext for ext in file_exts]):
-                os.remove(os.path.join(root, ff))
+            for ext in file_exts:
+                if ff.endswith(ext) and ff != "mni305.cor.nii.gz":
+                    os.remove(os.path.join(root, ff))
 
     return

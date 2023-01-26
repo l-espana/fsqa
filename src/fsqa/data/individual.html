@@ -165,29 +165,29 @@ div#accordionOther {
 </div>
 
 <h2 id="tlrc" class="mt-5 mb-2">Talairach Registration</h2>
-{% for svg in tlrc_svg %}
+{% for tag in tlrc %}
     <div class="card mt-2">
         <div id="report-tlrc" class="card-body">
-        {{ svg }}
+        {{ tag }}
         </div>
     </div>
 {% endfor %}
 
 <h2 id="aseg" class="mt-5 mb-2">Aparc+Aseg Parcellations</h2>
-{% for png_tag, png in aseg_png %}
+{% for tag in aseg %}
     <div class="card mt-2">
         <div id="report-aseg" class="card-body">
-        {{ png_tag }}
+        {{ tag }}
         </div>
     </div>
 {% endfor %}
 
 <h2 id="surf" class="mt-5 mb-2">Surfaces</h2>
-{% for label, png_tag, png_img in surf_png %}
+{% for label, tag in surf %}
     <div class="card mt-2">
         <h4 id="surf" class="mt-5 mb-2">{{ label }}</h4>
         <div id="report-{{ label }}" class="card-body">
-        {{ png_tag }}
+        {{ tag }}
         </div>
     </div>
 {% endfor %}

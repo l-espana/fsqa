@@ -20,18 +20,19 @@
 Main workflow.
 """
 import os
-from niworkflows.utils.bids import collect_participants
+from pathlib import Path
 from pkg_resources import resource_filename as pkgrf
-from .parser import parse_args
-from .. import config
-from ..freesurfer import check_reconall, get_tlrc_report, get_aseg_plots
-from ..reports import gen_html, cleanup
+from niworkflows.utils.bids import collect_participants
+from fsqa.cli.parser import parse_args
+from fsqa import config
+from fsqa.freesurfer import check_reconall, get_tlrc_report, get_aseg_plots
+from fsqa.reports import gen_html, cleanup
 
 
 def main():
     """Entry point."""
     parse_args()
-    template = pkgrf("fsqa", "data/individual.html")
+    template = Path(pkgrf("fsqa.data", "individual.html"))
     pwd = os.getcwd()
 
     # Initial setup and config
@@ -72,6 +73,7 @@ def main():
             )
         ]
         aseg_imgs = get_aseg_plots(
+            config.execution.freesurfer_home,
             config.execution.subjects_dir / subject_id,
             config.execution.output_dir / subject_id,
             num_imgs=config.execution.num_imgs,
